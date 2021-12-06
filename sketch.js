@@ -4,12 +4,12 @@ const Bodies = Matter.Bodies;
 var thunder, thunder1,thunder2,thunder3,thunder4;
 var batAnimation,bat;
 
-var engine, world;
-var drops;
 
+var engine, world;
+var drops = [];
 var rand;
 
-
+var maxDrops=100;
 
 var thunderCreatedFrame=0;
 
@@ -33,10 +33,11 @@ function setup(){
     createCanvas(400,700);
     umbrella = new Umbrella(200,500);
 
-    //create drops
-    var maxDrops=100;
-    for(var i=0; i<maxDrops; i++){
-        drops.push(new createDrop(random(0,400),random(0,400)));
+    //creating drops
+    if(frameCount % 150 === 0){
+        for(var i=0; i<maxDrops; i++){
+            drops.push(new Rain(random(0,400), random(0,400)));
+        }
     }
     
 }
@@ -76,15 +77,18 @@ function draw(){
     }
     
 
+   
+
     if(thunderCreatedFrame + 10 ===frameCount && thunder){
         thunder.destroy();
     }
 
     umbrella.display();
 
-    //display rain drops
-    Rain.update();
-
+    //displaying rain drops
+    for(var i = 0; i<maxDrops; i++){
+        drops[i].showDrop();
+        drops[i].update();
+    }
     drawSprites();
-}   
-
+} 
